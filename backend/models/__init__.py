@@ -1,5 +1,4 @@
 from models.user import User
-from models.energy_reading import EnergyReading
-from models.battery_status import BatteryStatus
+from models.sensor_reading import SensorReading
 
-__all__ = ["User", "EnergyReading", "BatteryStatus"]
+__all__ = ["User", "SensorReading"]

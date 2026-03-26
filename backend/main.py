@@ -2,8 +2,8 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from utils import setup_logging, get_logger
 from database import init_db
-from models import User, EnergyReading, BatteryStatus
-from routes import battery, cost, dashboard, energy, system
+from models import User, SensorReading
+from routes import battery, cost, dashboard, energy, system, pi
 
 # Setup logging first thing
 setup_logging(log_level="DEBUG")  # Use DEBUG for development, INFO for production
@@ -22,6 +22,7 @@ api_router.include_router(battery.router)
 api_router.include_router(cost.router)
 api_router.include_router(energy.router)
 api_router.include_router(system.router)
+api_router.include_router(pi.router)
 app.include_router(api_router)
 
 # CORS configuration - allows your Vue frontend to talk to the backend

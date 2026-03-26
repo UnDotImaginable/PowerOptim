@@ -37,9 +37,8 @@ class User(Base):
     
     # Relationships - connect to other tables
     # This creates a "virtual" field that lets you access related data
-    # user.energy_readings will give you all EnergyReading rows for this user
-    energy_readings = relationship("EnergyReading", back_populates="user")
-    battery_statuses = relationship("BatteryStatus", back_populates="user")
+    # user.sensor_readings will give you all EnergyReading rows for this user
+    sensor_readings = relationship("SensorReading", back_populates="user")
     
     def __repr__(self):
         """
