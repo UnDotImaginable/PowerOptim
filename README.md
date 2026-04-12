@@ -1,5 +1,7 @@
 # ⚡ PowerOptim - Smart Home Energy Optimization System
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/PowerOptim/PowerOptim?utm_source=oss&utm_medium=github&utm_campaign=PowerOptim%2FPowerOptim&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 > Senior Capstone Project - Computer Science 2025/2026 - Cleveland State University
 
 A real-time energy monitoring and optimization system that intelligently manages power consumption between grid electricity and battery storage to minimize costs.
