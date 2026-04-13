@@ -57,31 +57,35 @@ async def receive_reading(
     }
     
 
-def get_grid_now(db: Session) -> float:
+def get_grid_now(db: Session) -> float | None:
+    now = datetime.now(timezone.utc)
     latest = (
         db.query(RealtimeLMP)
+        .filter(RealtimeLMP.valid_until > now)
         .order_by(RealtimeLMP.datetime_beginning_utc.desc())
         .first()
     )
-    return latest.total_lmp_rt if latest else 0.0
+    return latest.total_lmp_rt if latest else None
 
-def get_grid_future(db: Session) -> float:
+def get_grid_future(db: Session) -> float | None:
+    now = datetime.now(timezone.utc)
     latest = (
         db.query(ItscedLMP)
+        .filter(ItscedLMP.valid_until > now)
         .order_by(ItscedLMP.datetime_beginning_utc.desc()).
         first()
     )
-    return latest.itsced_lmp if latest else 0.0
+    return latest.itsced_lmp if latest else None
 
 
-def get_battery_level(db: Session) -> int:
+def get_battery_level(db: Session) -> int | None:
     latest = (
         db.query(SensorReading)
         .filter(SensorReading.user_id == 1)
         .order_by(SensorReading.timestamp.desc())
         .first()
     )
-    return latest.battery_level if latest else 0
+    return latest.battery_level if latest else None
     
 
 @router.get("/pending-command")
@@ -96,6 +100,8 @@ async def pending_command(db: Session = Depends(get_db)):
     g_future = get_grid_future(db)
     b_charge = get_battery_level(db)
 
+    if g_now is None or g_future is None:
+        raise HTTPException(status_code=503, detail="Grid pricing unavailable")
     result = get_pending_command(g_now, g_future, b_charge)
 
     logger.debug(
