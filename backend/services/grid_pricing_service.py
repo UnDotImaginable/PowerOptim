@@ -20,9 +20,14 @@ def fetch_and_store_realtime_lmp():
         response = requests.get(
             "https://api.pjm.com/api/v1/rt_unverified_fivemin_lmps",
             params={"pnode_id": PNODE_ID, "format": "json"},
-            headers=HEADERS
+            headers=HEADERS,
+            timeout=10,
         )
-        data = response.json()["items"][0]
+        response.raise_for_status()
+        items = response.json().get("items") or []
+        if not items:
+            raise ValueError("PJM returned no realtime LMP items")
+        data = items[0]
 
         reading = RealtimeLMP(
             datetime_beginning_utc      = datetime.fromisoformat(data["datetime_beginning_utc"]),
